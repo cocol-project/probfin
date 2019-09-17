@@ -1,6 +1,6 @@
 # ProbFin
 
-TODO: Write a description here
+Probabilistic Finality for Crystal
 
 ## Installation
 
