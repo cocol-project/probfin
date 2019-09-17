@@ -1,4 +1,4 @@
-# DAG
+# ProbFin
 
 TODO: Write a description here
 
@@ -8,8 +8,8 @@ TODO: Write a description here
 
    ```yaml
    dependencies:
-     DAG:
-       github: your-github-user/DAG
+     probfin:
+       github: cocol-project/probfin
    ```
 
 2. Run `shards install`
@@ -17,7 +17,7 @@ TODO: Write a description here
 ## Usage
 
 ```crystal
-require "DAG"
+require "probfin"
 ```
 
 TODO: Write usage instructions here
