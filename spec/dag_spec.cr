@@ -1,4 +1,5 @@
 require "./spec_helper"
+require "../src/dag"
 
 describe DAG do
   context "Topological Sorting" do
@@ -62,35 +63,5 @@ describe DAG do
       tip[0].should eq(v6)
       tip[1].should eq(5)
     end
-  end
-end
-
-describe ProbFin do
-  context "DAG Construction" do
-    ProbFin::Chain.ledger << "a0"
-
-    # creatings blocks with parent
-    chain = [
-      ["aa", "a0"],
-      ["ba", "aa"],
-      ["bb", "ba"],
-      ["ca", "ba"],
-      ["cb", "ca"],
-      ["cc", "cb"],
-      ["da", "ca"],
-      ["ea", "da"],
-      ["fa", "ea"]
-    ].shuffle
-
-    chain.each do |block|
-      ProbFin.add(block: block[0], parent: block[1])
-    end
-
-    it "built a DAG correctly" do
-      result = DAG::Graph.topsort(from: ProbFin::Chain.threshold[0]).map { |v| v.name }
-      result.should eq(["aa", "ba", "ca", "da", "ea", "fa", "cb", "cc", "bb"])
-    end
-
-
   end
 end

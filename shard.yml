@@ -1,9 +1,9 @@
-name: DAG
-version: 0.1.0
+name: ProbFin
+version: 0.1.0-alpha
 
 authors:
-  - your-name-here <your-email-here>
+  - Cristian Șerb <cserb@pm.me>
 
-crystal: 0.27.2
+crystal: 0.30.1
 
 license: MIT
