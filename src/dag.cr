@@ -69,7 +69,7 @@ module DAG
       distances
     end
 
-    def longest_branch(
+    def tip_of_longest_branch(
       from vertex : DAG::Vertex,
       in topsorted_graph : Array(DAG::Vertex)
     ) : Array
