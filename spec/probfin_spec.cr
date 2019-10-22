@@ -24,9 +24,30 @@ describe ProbFin do
       ProbFin.push(block: block[0], parent: block[1])
     end
 
-    it "built a DAG correctly" do
-      result = DAG::Graph.topsort(from: ProbFin::Chain.dag["aa"]).map { |v| v.name }
+    it "builds a DAG correctly" do
+      result = Helper.topsort(from: ProbFin::Chain.dag["aa"]).map { |v| v.name }
       result.should eq(["aa", "ba", "ca", "da", "ea", "fa", "cb", "cc", "bb"])
     end
+  end
+end
+
+module Helper
+  extend self
+
+  def topsort(
+       from vertex : DAG::Vertex,
+            visited = Hash(String, Bool).new,
+            stack = Array(DAG::Vertex).new
+     ) : Array(DAG::Vertex)
+    visited[vertex.name] = true
+
+    sorted_children = vertex.children.sort_by { |c| c.name }
+    sorted_children.each do |child|
+      if !visited[child.name]?
+        topsort(from: child, visited: visited, stack: stack)
+      end
+    end
+
+    stack.unshift(vertex)
   end
 end
