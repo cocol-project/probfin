@@ -30,7 +30,7 @@ describe DAG do
     # we can use the shortest path calculation to find the longest path
     # as well by finding the one with the longest distance value
     it "finds the correct distances" do
-      distances = DAG::Graph.distances(from: v1)
+      distances = DAG.distances(from: v1)
       result_by_name = distances.map { |k, v| [k.name, v] }
       expected_distances = [["ba", 1],
                             ["bb", 2],
@@ -45,7 +45,7 @@ describe DAG do
     end
 
     it "finds the tip of the longest branch (chain)" do
-      tip = DAG::Graph.tip_of_longest_branch(from: v1)
+      tip = DAG.tip_of_longest_branch(from: v1)
       tip[0].should eq(v6)
       tip[1].should eq(5)
     end

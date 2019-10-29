@@ -15,44 +15,33 @@ module DAG
     def children : Array(Vertex)
       @edges.values
     end
-
-    # def ==(vertex : Vertex) : Bool
-    #   @name == vertex.name
-    # end
-
-    # def !=(vertex : Vertex) : Bool
-    #   @name != vertex.name
-    # end
   end
 
-  module Graph
-    extend self
+  extend self
 
-    def distances(
-      from vertex : DAG::Vertex,
-      visited = Hash(DAG::Vertex::Name, Bool).new(false),
-      stack = Hash(DAG::Vertex, Int32).new(0)
-    ) : Hash(DAG::Vertex, Int32)
+  def distances(
+    from vertex : DAG::Vertex,
+    visited = Hash(DAG::Vertex::Name, Bool).new(false),
+    stack = Hash(DAG::Vertex, Int32).new(0)
+  ) : Hash(DAG::Vertex, Int32)
 
-      visited[vertex.name] = true
+    visited[vertex.name] = true
 
-      sorted_children = vertex.children.sort_by { |c| c.name }
-      sorted_children.each do |child|
-        if !visited[child.name]
-          stack[child] = stack[vertex] + 1
-          distances(from: child, visited: visited, stack: stack)
-        end
+    sorted_children = vertex.children.sort_by { |c| c.name }
+    sorted_children.each do |child|
+      if !visited[child.name]
+        stack[child] = stack[vertex] + 1
+        distances(from: child, visited: visited, stack: stack)
       end
-
-      stack
     end
 
+    stack
+  end
 
-    def tip_of_longest_branch(from vertex : DAG::Vertex) : Array
-      distances = self.distances(from: vertex)
+  def tip_of_longest_branch(from vertex : DAG::Vertex) : Array
+    distances = self.distances(from: vertex)
 
-      # Tip of longest branch (chain)
-      distances.map { |k, v| [k, v] }.sort_by { |d| d[1].as(Int32) }.last
-    end
+    # Tip of longest branch (chain)
+    distances.map { |k, v| [k, v] }.sort_by { |d| d[1].as(Int32) }.last
   end
 end
