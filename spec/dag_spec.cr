@@ -26,9 +26,6 @@ describe DAG do
   #           v21  v31--v32
 
   context "Distances" do
-    # Since all weights are 1 and we have no vertex with 2 parents
-    # we can use the shortest path calculation to find the longest path
-    # as well by finding the one with the longest distance value
     it "finds the correct distances" do
       distances = DAG.distances(from: v1)
       result_by_name = distances.map { |k, v| [k.name, v] }
