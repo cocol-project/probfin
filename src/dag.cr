@@ -1,4 +1,9 @@
 module DAG
+  record Tip,
+    vertex : DAG::Vertex,
+    distance : Int32,
+    branch_root : (DAG::Vertex | Nil)
+
   class Vertex
     alias Name = String
 
@@ -8,7 +13,7 @@ module DAG
     def initialize(@name, @edges = {} of Name => Vertex)
     end
 
-    def add(edge_to vertex : Vertex) : Void
+    def add(edge_to vertex : Vertex) : Nil
       @edges[vertex.name] = vertex
     end
 
@@ -19,29 +24,64 @@ module DAG
 
   extend self
 
-  def distances(
-    from vertex : DAG::Vertex,
-    visited = Hash(DAG::Vertex::Name, Bool).new(false),
-    stack = Hash(DAG::Vertex, Int32).new(0)
-  ) : Hash(DAG::Vertex, Int32)
+  def tips(
+    from vertex : Vertex,
+    visited = Hash(Vertex::Name, Bool).new(false),
+    stack = Hash(Vertex, Int32).new(0),
+    tips = Array(DAG::Tip).new,
+    start : (Vertex | Nil) = nil,
+    current_branch_root : (Vertex | Nil) = nil
+  ) : Array(DAG::Tip)
+    # remember the starting vertex
+    start = vertex if stack.empty?
 
+    # mark current vertex as visited
     visited[vertex.name] = true
 
+    # sort children just to make it easier to test
     sorted_children = vertex.children.sort_by { |c| c.name }
-    sorted_children.each do |child|
-      if !visited[child.name]
-        stack[child] = stack[vertex] + 1
-        distances(from: child, visited: visited, stack: stack)
+    # if it has no children it's the tip of a branch
+    if !sorted_children[0]?
+      tips << DAG::Tip.new(
+        vertex: vertex,
+        distance: stack[vertex],
+        branch_root: current_branch_root
+      )
+    else
+      # it has children so let's continue the traverse
+      sorted_children.each do |child|
+        if !visited[child.name]
+          # we mark the child of the starting vertex as the current root
+          # of the branch we are exploring
+          if start == vertex
+            current_branch_root = child
+          end
+          # we calculate the distance of the child
+          stack[child] = stack[vertex] + 1
+
+          tips(
+            from: child,
+            visited: visited,
+            stack: stack,
+            tips: tips,
+            start: start,
+            current_branch_root: current_branch_root
+          )
+        end
       end
     end
 
-    stack
+    tips
   end
 
-  def tip_of_longest_branch(from vertex : DAG::Vertex) : Array
-    distances = self.distances(from: vertex)
+  def tip_of_longest_branch(from vertex : DAG::Vertex) : DAG::Tip
+    tips = self.tips(from: vertex)
 
+    tip_of_longest_branch from: tips
+  end
+
+  def tip_of_longest_branch(from tips : Array(DAG::Tip)) : DAG::Tip
     # Tip of longest branch (chain)
-    distances.map { |k, v| [k, v] }.sort_by { |d| d[1].as(Int32) }.last
+    tips.max_by { |t| t.distance }
   end
 end
