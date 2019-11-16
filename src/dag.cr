@@ -41,7 +41,7 @@ module DAG
     # sort children just to make it easier to test
     sorted_children = vertex.children.sort_by { |c| c.name }
     # if it has no children it's the tip of a branch
-    if !sorted_children[0]?
+    if sorted_children.empty?
       tips << DAG::Tip.new(
         vertex: vertex,
         distance: distance[vertex],
