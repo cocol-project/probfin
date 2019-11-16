@@ -27,13 +27,13 @@ module DAG
   def tips(
     from vertex : Vertex,
     visited = Hash(Vertex::Name, Bool).new(false),
-    stack = Hash(Vertex, Int32).new(0),
+    distance = Hash(Vertex, Int32).new(0),
     tips = Array(DAG::Tip).new,
     start : (Vertex | Nil) = nil,
     current_branch_root : (Vertex | Nil) = nil
   ) : Array(DAG::Tip)
     # remember the starting vertex
-    start = vertex if stack.empty?
+    start = vertex if distance.empty?
 
     # mark current vertex as visited
     visited[vertex.name] = true
@@ -44,7 +44,7 @@ module DAG
     if !sorted_children[0]?
       tips << DAG::Tip.new(
         vertex: vertex,
-        distance: stack[vertex],
+        distance: distance[vertex],
         branch_root: current_branch_root
       )
     else
@@ -57,12 +57,12 @@ module DAG
             current_branch_root = child
           end
           # we calculate the distance of the child
-          stack[child] = stack[vertex] + 1
+          distance[child] = distance[vertex] + 1
 
           tips(
             from: child,
             visited: visited,
-            stack: stack,
+            distance: distance,
             tips: tips,
             start: start,
             current_branch_root: current_branch_root
