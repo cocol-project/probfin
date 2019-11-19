@@ -72,8 +72,8 @@ describe ProbFin do
         ProbFin.push block: orphan, parent: parent
 
         ProbFin.finalize from: "ca",
-                         chain_length_threshold: 1,
-                         tip_diff_threshold: 0
+          chain_length_threshold: 1,
+          tip_diff_threshold: 0
         ProbFin::Chain.dag[orphan]?.should be_truthy
 
         ProbFin::Chain.orphans[parent].should eq([orphan])

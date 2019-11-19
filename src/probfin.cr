@@ -58,7 +58,7 @@ module ProbFin
 
     tolb = tips.max_by { |t| t.distance }
     remaining_chain = self.traverse_remaining from: tolb.branch_root
-    ProbFin::Chain.orphans.each do |_,orphans|
+    ProbFin::Chain.orphans.each do |_, orphans|
       orphans.each do |o|
         h = Hash(BlockHash, DAG::Vertex).new
         h[o] = ProbFin::Chain.dag[o]
