@@ -7,11 +7,11 @@ confirmations it returns the next finalized block.
 
 1. Add the dependency to your `shard.yml`:
 
-   ``` yaml
+``` yaml
    dependencies:
      probfin:
        github: cocol-project/probfin
-   ```
+```
 
 2. Run `shards install`
 
