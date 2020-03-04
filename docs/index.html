@@ -97,13 +97,14 @@
 
 
 <div class="main-content">
-<h1><a id="prob-fin" class="anchor" href="#prob-fin">
+<h1><a id="cocol-probabilistic-finality" class="anchor" href="#cocol-probabilistic-finality">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>ProbFin</h1>
+</a>Cocol Probabilistic Finality</h1>
 
-<p>Probabilistic Finality for Crystal</p>
+<p>Based on DAGs, it manages chains, sidechains and orphans. Given a threshold of
+confirmations it returns the next finalized block.</p>
 
 <h2><a id="installation" class="anchor" href="#installation">
   <svg class="octicon-link" aria-hidden="true">
@@ -113,7 +114,7 @@
 
 <ol><li>Add the dependency to your <code>shard.yml</code>:</li></ol>
 
-<p><code></code>`yaml
+<p><code></code>` yaml
    dependencies:</p>
 
 <pre><code> probfin:
@@ -131,15 +132,22 @@
 
 <pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;probfin&quot;</span></code></pre>
 
-<p><span class="flag orange">TODO</span>  Write usage instructions here</p>
+<pre><code class="language-crystal"><span class="c"># (a0)---aa---ba---ca---da---ea---fa</span>
+<span class="c">#              \    \</span>
+<span class="c">#               bb   cb---cc</span>
 
-<h2><a id="development" class="anchor" href="#development">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Development</h2>
+<span class="c"># add blocks (aa, a0 should be block hashes)</span>
+<span class="t">ProbFin</span>.push(block: <span class="s">&quot;aa&quot;</span>, parent: <span class="s">&quot;a0&quot;</span>)
+<span class="t">ProbFin</span>.push(block: <span class="s">&quot;ba&quot;</span>, parent: <span class="s">&quot;aa&quot;</span>)
+<span class="t">ProbFin</span>.push(block: <span class="s">&quot;bb&quot;</span>, parent: <span class="s">&quot;ba&quot;</span>)
+...
 
-<p><span class="flag orange">TODO</span>  Write development instructions here</p>
+
+<span class="t">ProbFin</span>.finalize from: <span class="s">&quot;aa&quot;</span>,
+    chain_length_threshold: <span class="n">5</span>, <span class="c"># 5 confirmations (fa being the 5th) </span>
+    tip_diff_threshold: <span class="n">0</span> <span class="c"># how many more confirmations should it have compared to sidechains</span>
+    
+<span class="c"># =&gt; ba</span></code></pre>
 
 <h2><a id="contributing" class="anchor" href="#contributing">
   <svg class="octicon-link" aria-hidden="true">
@@ -147,7 +155,7 @@
   </svg>
 </a>Contributing</h2>
 
-<ol><li>Fork it (&lt;https://github.com/your-github-user/DAG/fork>)</li><li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li><li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li><li>Push to the branch (<code>git push origin my-new-feature</code>)</li><li>Create a new Pull Request</li></ol>
+<ol><li>Fork it (&lt;https://github.com/cocol-project/probfin/fork>)</li><li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li><li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li><li>Push to the branch (<code>git push origin my-new-feature</code>)</li><li>Create a new Pull Request</li></ol>
 
 <h2><a id="contributors" class="anchor" href="#contributors">
   <svg class="octicon-link" aria-hidden="true">
@@ -155,7 +163,7 @@
   </svg>
 </a>Contributors</h2>
 
-<ul><li><a href="https://github.com/your-github-user" target="_blank">your-name-here</a> - creator and maintainer</li></ul>
+<ul><li><a href="https://github.com/cserb" target="_blank">cserb</a> - creator and maintainer</li></ul>
 </div>
 </body>
 </html>
