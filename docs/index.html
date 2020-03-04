@@ -145,6 +145,29 @@ confirmations it returns the next finalized block.</p>
     
 <span class="c"># =&gt; ba</span></code></pre>
 
+<h2><a id="how-prob-fin-works" class="anchor" href="#how-prob-fin-works">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>How ProbFin works</h2>
+
+<p><img src="https://thepracticaldev.s3.amazonaws.com/i/bfimp8gtxgbiyc5pb480.png" alt="Alt Text"/></p>
+
+<p>The data structure above resembles a Directed Acyclic Graph (DAG) and fortunately DAGs allow for an easy way to find the longest chain. This is an important part of achieving probabilistic finality.</p>
+
+<p>A DAG is made up of nodes (also called vertices) and edges. An edge represents a link between 2 vertices (e.g. <code>3000.1->3001.1</code>). We can and should traverse a DAG to find out more about its structure, like how far away is vertex <code>3005.1</code> from vertex <code>3000.1</code></p>
+
+<p>Additionally a DAG has some unique properties. Find out more about it <a href="https://www.youtube.com/watch?v=TXkDpqjDMHA" target="_blank">here</a></p>
+
+<p><strong>2. How to find the longest chain</strong></p>
+
+<p>If we look again at the example above, it becomes apparent that <code>3005.1</code> is the tip of the longest chain. But how can we find it out programmatically?</p>
+
+<p>We are going to use <a href="https://www.youtube.com/watch?v=7fujbpJ0LB4" target="_blank">Depth First Search</a> to traverse the graph and mark every vertex with its distance from the starting vertex.
+We start at <code>3000.1</code> and give it a distance of <code>0</code>. Now we traverse through all vertices and give each a distance of <code>parent distance + 1</code>. So <code>3001.1</code> has a <code>parent distance</code> of <code>0</code> and <code>+1</code> gives a distance of <code>1</code>.</p>
+
+<p><img src="https://thepracticaldev.s3.amazonaws.com/i/qexgjvm9yv8ko8cwv6y2.png" alt="Alt Text"/></p>
+
 <h2><a id="contributing" class="anchor" href="#contributing">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
